@@ -1,19 +1,8 @@
-/*
-  ==============================================================================
-
-    This file contains the basic framework code for a JUCE plugin processor.
-
-  ==============================================================================
-*/
-
 #pragma once
 
 #include <JuceHeader.h>
 
-//==============================================================================
-/**
-*/
-class OneBassBandAudioProcessor  : public juce::AudioProcessor
+class OneBassBandAudioProcessor : public juce::AudioProcessor
 {
 public:
     //==============================================================================
@@ -30,10 +19,12 @@ public:
 
     void processBlock (juce::AudioBuffer<float>&, juce::MidiBuffer&) override;
 
+
     //==============================================================================
     juce::AudioProcessorEditor* createEditor() override;
     bool hasEditor() const override;
 
+    
     //==============================================================================
     const juce::String getName() const override;
 
