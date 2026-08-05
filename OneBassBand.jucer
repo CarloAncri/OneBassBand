@@ -12,21 +12,25 @@
               includeBinaryInJuceHeader="1" binaryDataNamespace="BinaryData"
               userNotes="Progetto per esame di Sviluppo di Tecnologie per la Produzione Musicale, a cura di Ancri Carlo e Piralla Lorenzo.">
   <MAINGROUP id="TCkZI3" name="OneBassBand">
-    <GROUP id="{A80E0DD0-A0E7-37DE-DA87-D96FA2758F77}" name="GUI">
-      <FILE id="NxXgRb" name="MyTheme.h" compile="0" resource="0" file="Source/GUI/MyTheme.h"/>
-    </GROUP>
-    <GROUP id="{EA3BBBF5-31DA-B78C-E803-B0A0AA88A243}" name="DSP">
-      <FILE id="TnOsEV" name="Octaver.h" compile="0" resource="0" file="Source/DSP/Octaver.h"/>
-      <FILE id="dEd0E3" name="One-Knob-Compressor.h" compile="0" resource="0"
-            file="Source/DSP/One-Knob-Compressor.h"/>
-      <FILE id="gIgcuq" name="DryWet.h" compile="0" resource="0" file="Source/DSP/DryWet.h"/>
-      <FILE id="yueyJL" name="Distortion.h" compile="0" resource="0" file="Source/DSP/Distortion.h"/>
-    </GROUP>
     <GROUP id="{4EABCBF3-4313-015C-310D-966C414F3D67}" name="Source">
+      <GROUP id="{EA3BBBF5-31DA-B78C-E803-B0A0AA88A243}" name="DSP">
+        <FILE id="PHgy66" name="DryWet.cpp" compile="1" resource="0" file="Source/DSP/DryWet.cpp"/>
+        <FILE id="gIgcuq" name="DryWet.h" compile="0" resource="0" file="Source/DSP/DryWet.h"/>
+        <FILE id="dEd0E3" name="One-Knob-Compressor.h" compile="0" resource="0"
+              file="Source/DSP/One-Knob-Compressor.h"/>
+        <FILE id="xbBSA3" name="Octaver.cpp" compile="1" resource="0" file="Source/DSP/Octaver.cpp"/>
+        <FILE id="TnOsEV" name="Octaver.h" compile="0" resource="0" file="Source/DSP/Octaver.h"/>
+        <FILE id="yueyJL" name="Distortion.h" compile="0" resource="0" file="Source/DSP/Distortion.h"/>
+      </GROUP>
+      <GROUP id="{A80E0DD0-A0E7-37DE-DA87-D96FA2758F77}" name="GUI">
+        <FILE id="NxXgRb" name="MyTheme.h" compile="0" resource="0" file="Source/GUI/MyTheme.h"/>
+      </GROUP>
       <FILE id="nnbgue" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="OYvl87" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="jDLbFA" name="PluginParameters.h" compile="0" resource="0"
+            file="Source/PluginParameters.h"/>
       <FILE id="Q6Fxnu" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="mUM1zo" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
