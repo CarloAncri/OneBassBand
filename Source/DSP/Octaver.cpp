@@ -14,17 +14,18 @@ void Octaver::prepareToPlay(double sampleRate, int samplesPerBlock)
   delayBuffer.setSize(2, static_cast<int>(mSampleRate * 1.0));
   delayBuffer.clear();
 
-  currentOctave = targetOctave;
+  currentOctave = targetOctave.load();
   updateParameters();
 }
 
 
-void Octaver::setOctave(int newOctave) { targetOctave = newOctave; }
+void Octaver::setOctave(int newOctave) { targetOctave.store(newOctave); }
 
 
 void Octaver::updateParameters()
 {
-  if (currentOctave == 0) {
+  if (currentOctave == 0)
+  {
     amplitudeSamples = 0.0f;
     return;
   }
@@ -33,10 +34,13 @@ void Octaver::updateParameters()
   float T = 1.0f / modFrequency;
   float Amp_seconds = 0.0f;
 
-  if (R > 1.0f) { // pitch up
+  if (R > 1.0f) // pitch up
+  { 
     Amp_seconds = T * (R - 1.0f);
     isPitchUp = true;
-  } else { // pitch down
+  }
+  else // pitch down
+  { 
     Amp_seconds = T * (1.0f - R);
     isPitchUp = false;
   }
@@ -47,8 +51,11 @@ void Octaver::updateParameters()
 
 void Octaver::processBlock(juce::AudioBuffer<float> &buffer)
 {
-  if (currentOctave != targetOctave) {
-    currentOctave = targetOctave;
+  const int target = targetOctave.load();
+
+  if (currentOctave != target)
+  {
+    currentOctave = target;
     updateParameters();
   }
 
@@ -60,7 +67,8 @@ void Octaver::processBlock(juce::AudioBuffer<float> &buffer)
   const int channelsToProcess = juce::jmin(numChannels, delayBuffer.getNumChannels());
 
   // === samples ===
-  for (int i = 0; i < numSamples; ++i) {
+  for (int i = 0; i < numSamples; ++i)
+  {
     float s1 = currentPhase;
     float s2 = std::fmod(s1 + 0.5f, 1.0f);
 
@@ -78,12 +86,14 @@ void Octaver::processBlock(juce::AudioBuffer<float> &buffer)
     float readPos2 = static_cast<float>(writePosition) - delay2;
 
     // === channels ===
-    for (int ch = 0; ch < channelsToProcess; ++ch) {
+    for (int ch = 0; ch < channelsToProcess; ++ch)
+    {
       float inputSample = buffer.getReadPointer(ch)[i];
 
       delayBuffer.setSample(ch, writePosition, inputSample);
 
-      if (currentOctave != 0) {
+      if (currentOctave != 0)
+      {
         float out1 = getLinearSample(ch, readPos1, delayLen);
         float out2 = getLinearSample(ch, readPos2, delayLen);
 

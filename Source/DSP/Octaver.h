@@ -1,6 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
+#include <atomic>
 
 class Octaver
 {
@@ -25,7 +26,7 @@ private:
 
   double mSampleRate = 44100.0;
   int currentOctave = 0;
-  int targetOctave = 0;
+  std::atomic<int> targetOctave{0};
 
   float amplitudeSamples = 0.0f;
   bool isPitchUp = false;
