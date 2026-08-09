@@ -15,6 +15,7 @@ OneBassBandAudioProcessor::OneBassBandAudioProcessor()
 #endif
       apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout())
 {
+  Parameters::addListenerToAllParameters(apvts, this);
 }
 
 OneBassBandAudioProcessor::~OneBassBandAudioProcessor()
@@ -95,18 +96,17 @@ void OneBassBandAudioProcessor::releaseResources()
 void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)
 {
   juce::ScopedNoDenormals noDenormals;
+  juce::ignoreUnused(midiMessages);
 
-  // === parameters update ===
-  auto *octaveParam = apvts.getRawParameterValue(Parameters::pitchShiftedOctave);
+  octaver.processBlock(buffer);
+}
+
+void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
+{ 
+  if (parameterID == Parameters::pitchShiftedOctave)
+    octaver.setOctave(static_cast<int>(newValue));
 
   
-  // === processing ===
-  if (octaveParam != nullptr)
-  {
-    int currentOctave = static_cast<int>(octaveParam->load());
-    octaver.setOctave(currentOctave);
-  }
-  octaver.processBlock(buffer);
 }
 
 //==============================================================================

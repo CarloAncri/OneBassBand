@@ -5,7 +5,7 @@
 #include "PluginParameters.h"
 #include "DSP/Octaver.h"
 
-class OneBassBandAudioProcessor : public juce::AudioProcessor
+class OneBassBandAudioProcessor : public juce::AudioProcessor, private juce::AudioProcessorValueTreeState::Listener
 {
 public:
   //==============================================================================
@@ -17,6 +17,8 @@ public:
   void releaseResources() override;
 
   void processBlock(juce::AudioBuffer<float> &, juce::MidiBuffer &) override;
+
+  void parameterChanged(const juce::String &parameterID, float newValue) override;
 
   //==============================================================================
   juce::AudioProcessorEditor *createEditor() override;
