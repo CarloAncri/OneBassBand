@@ -5,6 +5,7 @@
 #include "PluginParameters.h"
 #include "DSP/Octaver.h"
 #include "DSP/SampleRate-Incapsulator.h"
+#include "DSP/Distortion.h"
 
 # define TARGET_SAMPLE_RATE 96000.0f
 
@@ -51,6 +52,7 @@ private:
 
   Octaver octaver;
   SampleRateIncapsulator sampleRateManager{2, TARGET_SAMPLE_RATE};
+  Distortion distortion;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OneBassBandAudioProcessor)

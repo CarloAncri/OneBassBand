@@ -88,6 +88,7 @@ void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 {
   octaver.prepareToPlay(sampleRate, samplesPerBlock);
   sampleRateManager.prepareToPlay(sampleRate, samplesPerBlock);
+  distortion.prepareToPlay(TARGET_SAMPLE_RATE, samplesPerBlock);
 }
 
 void OneBassBandAudioProcessor::releaseResources()
@@ -101,9 +102,8 @@ void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 
   octaver.processBlock(buffer);
   sampleRateManager.processBlock(buffer, [this](juce::dsp::AudioBlock<float> &block) {
-    //distortion.processBlock(block);
+    distortion.processBlock(block);
   });
-
 }
 
 void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
@@ -111,6 +111,8 @@ void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID
   if (parameterID == Parameters::pitchShiftedOctave)
     octaver.setOctave(static_cast<int>(newValue));
 
+  if (parameterID == Parameters::distortionAmount)
+    distortion.setDistortionAmount(newValue);
   
 }
 
