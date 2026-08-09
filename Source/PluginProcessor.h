@@ -4,6 +4,9 @@
 
 #include "PluginParameters.h"
 #include "DSP/Octaver.h"
+#include "DSP/SampleRate-Incapsulator.h"
+
+# define TARGET_SAMPLE_RATE 96000.0f
 
 class OneBassBandAudioProcessor : public juce::AudioProcessor, private juce::AudioProcessorValueTreeState::Listener
 {
@@ -47,6 +50,7 @@ private:
   juce::AudioProcessorValueTreeState apvts;
 
   Octaver octaver;
+  SampleRateIncapsulator sampleRateManager{2, TARGET_SAMPLE_RATE};
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OneBassBandAudioProcessor)

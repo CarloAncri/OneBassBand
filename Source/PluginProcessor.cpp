@@ -87,6 +87,7 @@ void OneBassBandAudioProcessor::changeProgramName(int index, const juce::String 
 void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
   octaver.prepareToPlay(sampleRate, samplesPerBlock);
+  sampleRateManager.prepareToPlay(sampleRate, samplesPerBlock);
 }
 
 void OneBassBandAudioProcessor::releaseResources()
@@ -99,6 +100,10 @@ void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
   juce::ignoreUnused(midiMessages);
 
   octaver.processBlock(buffer);
+  sampleRateManager.processBlock(buffer, [this](juce::dsp::AudioBlock<float> &block) {
+    //distortion.processBlock(block);
+  });
+
 }
 
 void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
