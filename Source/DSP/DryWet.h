@@ -20,7 +20,7 @@ public:
   DryWet(float defaultDW = Parameters::defaultDryWetAmount);
   ~DryWet();
   // =================================================================
-  void prepareToPlay(double sampleRate, int maxBlockSize);
+  void prepareToPlay(double sampleRate, int maxBlockSize, int numChannels);
   void releaseResources();
   // =================================================================
   void copyDrySignal(juce::AudioBuffer<float> &sourceBuffer);
@@ -34,6 +34,7 @@ private:
   juce::AudioBuffer<float> drySignal;
   juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine {4096};
 
+  int numChannels = 0;
   float dwRatio = 0.5f;
 
   juce::SmoothedValue<float, juce::ValueSmoothingTypes::Linear> dryLevel;

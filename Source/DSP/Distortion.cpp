@@ -7,12 +7,6 @@ Distortion::Distortion(float distAmount)
 }
 
 
-void Distortion::prepareToPlay(double sampleRate, int samplesPerBlock)
-{
-  juce::ignoreUnused(sampleRate, samplesPerBlock);
-}
-
-
 void Distortion::setDistortionAmount(float newAmount)
 {
   amount = juce::jlimit(0.0f, 1.0f, newAmount);

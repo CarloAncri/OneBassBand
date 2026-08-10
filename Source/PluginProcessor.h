@@ -57,7 +57,7 @@ private:
 
   GainStager inputGain{Parameters::defaultInputGain};
   Octaver octaver{Parameters::defaultPitchShiftedOctave};
-  SampleRateIncapsulator sampleRateManager{2};
+  SampleRateIncapsulator sampleRateManager;
   Distortion distortion{Parameters::defaultDistortionAmount};
   GainStager outputGain{Parameters::defaultOutputGain};
   DryWet dryWet{Parameters::defaultDryWetAmount};

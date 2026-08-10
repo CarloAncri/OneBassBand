@@ -1,12 +1,15 @@
 #include "DryWet.h"
 
+
 DryWet::DryWet(float defaultDW) { dwRatio = defaultDW; }
 DryWet::~DryWet() {}
 
 
-void DryWet::prepareToPlay(double sampleRate, int maxBlockSize)
+void DryWet::prepareToPlay(double sampleRate, int maxBlockSize, int numChannels)
 {
-  drySignal.setSize(2, maxBlockSize);
+  this->numChannels = numChannels;
+
+  drySignal.setSize(this->numChannels, maxBlockSize);
   drySignal.clear();
 
   dryLevel.reset(sampleRate, 0.01);
@@ -16,7 +19,7 @@ void DryWet::prepareToPlay(double sampleRate, int maxBlockSize)
   juce::dsp::ProcessSpec info;
   info.sampleRate = sampleRate;
   info.maximumBlockSize = static_cast<uint32_t>(maxBlockSize);
-  info.numChannels = 2;
+  info.numChannels = static_cast<uint32_t>(this->numChannels);
   delayLine.prepare(info);
   delayLine.reset();
 
@@ -24,15 +27,21 @@ void DryWet::prepareToPlay(double sampleRate, int maxBlockSize)
 }
 
 
-void DryWet::releaseResources() { drySignal.setSize(0, 0); }
+void DryWet::releaseResources()
+{
+  drySignal.setSize(0, 0);
+  delayLine.reset();
+  numChannels = 0;
+}
 
 
 void DryWet::copyDrySignal(juce::AudioBuffer<float> &sourceBuffer)
 {
   auto numCh = sourceBuffer.getNumChannels();
   auto numSamples = sourceBuffer.getNumSamples();
-
-  for (int ch = 0; ch < numCh; ++ch)
+  auto realChannels = juce::jmin(numCh, drySignal.getNumChannels());
+  
+  for (int ch = 0; ch < realChannels; ++ch)
     drySignal.copyFrom(ch, 0, sourceBuffer, ch, 0, numSamples);
 
   juce::dsp::AudioBlock<float> block(drySignal);
@@ -45,11 +54,12 @@ void DryWet::mixDrySignal(juce::AudioBuffer<float> &destinationBuffer)
 {
   auto numCh = destinationBuffer.getNumChannels();
   auto numSamples = destinationBuffer.getNumSamples();
+  auto realChannels = juce::jmin(numCh, drySignal.getNumChannels());
 
   dryLevel.applyGain(drySignal, numSamples);
   wetLevel.applyGain(destinationBuffer, numSamples);
 
-  for (int ch = 0; ch < numCh; ++ch)
+  for (int ch = 0; ch < realChannels; ++ch)
     destinationBuffer.addFrom(ch, 0, drySignal, ch, 0, numSamples);
 }
 

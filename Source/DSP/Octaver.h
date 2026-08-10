@@ -9,7 +9,7 @@
 /**
  * @class Octaver
  * @brief This class handles octave shifting functionality.
- * 
+ *
  * The signal can be pitched up or down in this octaves: [-2, -1, 0, 1, 2].
  * The pitch shifting is done by a delay line and two modulated read positions.
  */
@@ -19,7 +19,8 @@ public:
   Octaver(int currentOctave = Parameters::defaultPitchShiftedOctave);
   ~Octaver() = default;
 
-  void prepareToPlay(double sampleRate, int samplesPerBlock);
+  void prepareToPlay(double sampleRate, int numChannels);
+  void releaseResources();
   void processBlock(juce::AudioBuffer<float> &buffer);
 
   void setOctave(int newOctave);
@@ -30,6 +31,7 @@ private:
 
   juce::AudioBuffer<float> delayBuffer;
   int writePosition = 0;
+  int numChannels = 0;
 
   float currentPhase = 0.0f;
   float phaseIncrement = 0.0f;

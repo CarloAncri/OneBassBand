@@ -6,21 +6,28 @@ Octaver::Octaver(int currentOctave) : currentOctave(currentOctave), targetOctave
   updateParameters();
 }
 
-
-void Octaver::prepareToPlay(double sampleRate, int samplesPerBlock)
+void Octaver::prepareToPlay(double sampleRate, int numChannels)
 {
-  mSampleRate = sampleRate;
-  phaseIncrement = modFrequency / static_cast<float>(mSampleRate);
+  this->numChannels = numChannels;
+  this->mSampleRate = sampleRate;
+  this->phaseIncrement = this->modFrequency / static_cast<float>(this->mSampleRate);
 
-  currentPhase = 0.0f;
-  writePosition = 0;
+  this->currentPhase = 0.0f;
+  this->writePosition = 0;
 
   // lenght = 1 sec
-  delayBuffer.setSize(2, static_cast<int>(mSampleRate * 1.0));
+  delayBuffer.setSize(this->numChannels, static_cast<int>(this->mSampleRate * 1.0));
   delayBuffer.clear();
 
   currentOctave = targetOctave.load();
   updateParameters();
+}
+
+
+void Octaver::releaseResources()
+{
+  delayBuffer.setSize(0, 0);
+  numChannels = 0;
 }
 
 

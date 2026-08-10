@@ -18,8 +18,6 @@ public:
   Distortion(float distAmount = Parameters::defaultDistortionAmount);
   ~Distortion() = default;
 
-  void prepareToPlay(double sampleRate, int samplesPerBlock);
-
   void setDistortionAmount(float newAmount);
 
   void processBlock(juce::dsp::AudioBlock<float> &buffer);

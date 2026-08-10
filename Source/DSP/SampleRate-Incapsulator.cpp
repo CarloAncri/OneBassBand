@@ -1,19 +1,20 @@
 #include "SampleRate-Incapsulator.h"
 
 
-SampleRateIncapsulator::SampleRateIncapsulator(int channels) : numChannels(channels), exponent(0) {}
+SampleRateIncapsulator::SampleRateIncapsulator() : numChannels(0), exponent(0) {}
 
 
-float SampleRateIncapsulator::prepareToPlay(double sampleRate, int targetSampleRate, int samplesPerBlock)
+float SampleRateIncapsulator::prepareToPlay(double sampleRate, int targetSampleRate, int samplesPerBlock, int numChannels)
 {
+  this->numChannels = numChannels;
   double ratio = targetSampleRate / sampleRate;
-  exponent = std::max(0, static_cast<int>(std::round(std::log2(ratio)))); // 2^exponent = oversample quantity.
+  this->exponent = std::max(0, static_cast<int>(std::round(std::log2(ratio)))); // 2^exponent = oversample quantity.
 
-  if (exponent > 0)
+  if (this->exponent > 0)
   {
     oversampler = std::make_unique<juce::dsp::Oversampling<float>>(
-      numChannels, 
-      exponent, 
+      this->numChannels,
+      this->exponent, 
       juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR,
       true,
       false);

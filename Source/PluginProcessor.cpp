@@ -3,9 +3,9 @@
 
 //==============================================================================
 OneBassBandAudioProcessor::OneBassBandAudioProcessor() : AudioProcessor(BusesProperties()
-  .withInput("Input", juce::AudioChannelSet::stereo(), true)
-  .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
-  apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout())
+                                                                            .withInput("Input", juce::AudioChannelSet::stereo(), true)
+                                                                            .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+                                                         apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout())
 {
   Parameters::addListenerToAllParameters(apvts, this);
 }
@@ -96,22 +96,24 @@ void OneBassBandAudioProcessor::changeProgramName(int index, const juce::String 
 //==============================================================================
 void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
-  int numChannels = getMainBusNumInputChannels();
+  int numChannels = getTotalNumInputChannels();
 
   inputGain.prepareToPlay(sampleRate);
-  octaver.prepareToPlay(sampleRate, samplesPerBlock);
+  octaver.prepareToPlay(sampleRate, numChannels);
 
-  delaySamples = sampleRateManager.prepareToPlay(sampleRate, TARGET_SAMPLE_RATE, samplesPerBlock);
+  delaySamples = sampleRateManager.prepareToPlay(sampleRate, TARGET_SAMPLE_RATE, samplesPerBlock, numChannels);
   setLatencySamples(std::round(delaySamples));
-  dryWet.prepareToPlay(sampleRate, samplesPerBlock);
+  dryWet.prepareToPlay(sampleRate, samplesPerBlock, numChannels);
   dryWet.setDelaySamples(delaySamples);
 
-  distortion.prepareToPlay(TARGET_SAMPLE_RATE, samplesPerBlock);
   outputGain.prepareToPlay(sampleRate);
 }
 
 void OneBassBandAudioProcessor::releaseResources()
 {
+  dryWet.releaseResources();
+  octaver.releaseResources();
+  sampleRateManager.reset();
 }
 
 void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, juce::MidiBuffer &midiMessages)

@@ -13,10 +13,10 @@
 class SampleRateIncapsulator
 {
 public:
-  SampleRateIncapsulator(int numChannels);
+  SampleRateIncapsulator();
   ~SampleRateIncapsulator() = default;
 
-  float prepareToPlay(double sampleRate, int targetSampleRate, int samplesPerBlock);
+  float prepareToPlay(double sampleRate, int targetSampleRate, int samplesPerBlock, int numChannels);
   void reset();
   float getLatencyInSamples() const;
 
