@@ -1,6 +1,6 @@
 #include "DryWet.h"
 
-DryWet::DryWet(double defaultDW) { dwRatio = defaultDW; }
+DryWet::DryWet(float defaultDW) { dwRatio = defaultDW; }
 DryWet::~DryWet() {}
 
 
@@ -11,6 +11,14 @@ void DryWet::prepareToPlay(double sampleRate, int maxBlockSize)
 
   dryLevel.reset(sampleRate, 0.01);
   wetLevel.reset(sampleRate, 0.01);
+
+  // delay line (compensate for anti-aliasing filters)
+  juce::dsp::ProcessSpec info;
+  info.sampleRate = sampleRate;
+  info.maximumBlockSize = static_cast<uint32_t>(maxBlockSize);
+  info.numChannels = 2;
+  delayLine.prepare(info);
+  delayLine.reset();
 
   updateState();
 }
@@ -26,6 +34,10 @@ void DryWet::copyDrySignal(juce::AudioBuffer<float> &sourceBuffer)
 
   for (int ch = 0; ch < numCh; ++ch)
     drySignal.copyFrom(ch, 0, sourceBuffer, ch, 0, numSamples);
+
+  juce::dsp::AudioBlock<float> block(drySignal);
+  juce::dsp::ProcessContextReplacing<float> context(block);
+  delayLine.process(context);
 }
 
 
@@ -46,6 +58,12 @@ void DryWet::setDWRatio(float newValue)
 {
   dwRatio = newValue;
   updateState();
+}
+
+
+void DryWet::setDelaySamples(float newDelaySamples)
+{
+  delayLine.setDelay(newDelaySamples);
 }
 
 

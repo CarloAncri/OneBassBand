@@ -2,11 +2,13 @@
 
 #include <JuceHeader.h>
 
+#include "../PluginParameters.h"
+
 class DryWet
 {
 public:
   // =================================================================
-  DryWet(double defaultDW);
+  DryWet(float defaultDW = Parameters::defaultDryWetAmount);
   ~DryWet();
   // =================================================================
   void prepareToPlay(double sampleRate, int maxBlockSize);
@@ -15,11 +17,13 @@ public:
   void copyDrySignal(juce::AudioBuffer<float> &sourceBuffer);
   void mixDrySignal(juce::AudioBuffer<float> &destinationBuffer);
   void setDWRatio(float newValue);
+  void setDelaySamples(float newDelaySamples);
   // =================================================================
 private:
   void updateState();
 
   juce::AudioBuffer<float> drySignal;
+  juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine {4096};
 
   float dwRatio = 0.5f;
 
