@@ -13,9 +13,7 @@ public:
   void prepareToPlay(double sampleRate);
   void processBlock(juce::AudioBuffer<float> &buffer);
 
-  void setGain(float newGain);
+  void setGainDb(float newGain);
 private:
   juce::SmoothedValue<float> smoothedGain;
-
-  bool initialize = true;
 };
