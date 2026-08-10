@@ -7,6 +7,7 @@
 #include "DSP/SampleRate-Incapsulator.h"
 #include "DSP/Distortion.h"
 #include "DSP/Gain-Stager.h"
+#include "DSP/DryWet.h"
 
 # define TARGET_SAMPLE_RATE 96000.0f
 
@@ -58,6 +59,7 @@ private:
   SampleRateIncapsulator sampleRateManager{2};
   Distortion distortion{Parameters::defaultDistortionAmount};
   GainStager outputGain{Parameters::defaultOutputGain};
+  DryWet dryWet{Parameters::defaultDryWetAmount};
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OneBassBandAudioProcessor)

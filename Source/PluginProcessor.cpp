@@ -88,7 +88,11 @@ void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerB
 {
   inputGain.prepareToPlay(sampleRate);
   octaver.prepareToPlay(sampleRate, samplesPerBlock);
+
   delaySamples = sampleRateManager.prepareToPlay(sampleRate, TARGET_SAMPLE_RATE, samplesPerBlock);
+  dryWet.prepareToPlay(sampleRate, samplesPerBlock);
+  dryWet.setDelaySamples(delaySamples);
+
   distortion.prepareToPlay(TARGET_SAMPLE_RATE, samplesPerBlock);
   outputGain.prepareToPlay(sampleRate);
 }
@@ -103,17 +107,22 @@ void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
   juce::ignoreUnused(midiMessages);
 
   inputGain.processBlock(buffer);
+  dryWet.copyDrySignal(buffer);
 
   octaver.processBlock(buffer);
   sampleRateManager.processBlock(buffer, [this](juce::dsp::AudioBlock<float> &block) {
     distortion.processBlock(block);
   });
 
+  dryWet.mixDrySignal(buffer);
   outputGain.processBlock(buffer);
 }
 
 void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
 { 
+  if (parameterID == Parameters::dryWetAmount)
+    dryWet.setDWRatio(newValue);
+
   if (parameterID == Parameters::pitchShiftedOctave)
     octaver.setOctave(static_cast<int>(newValue));
 
