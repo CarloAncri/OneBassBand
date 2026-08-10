@@ -2,24 +2,34 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-OneBassBandAudioProcessor::OneBassBandAudioProcessor()
-#ifndef JucePlugin_PreferredChannelConfigurations
-    : AudioProcessor(BusesProperties()
-#if !JucePlugin_IsMidiEffect
-#if !JucePlugin_IsSynth
-                         .withInput("Input", juce::AudioChannelSet::stereo(), true)
-#endif
-                         .withOutput("Output", juce::AudioChannelSet::stereo(), true)
-#endif
-                         ),
-#endif
-      apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout())
+OneBassBandAudioProcessor::OneBassBandAudioProcessor() : AudioProcessor(BusesProperties()
+  .withInput("Input", juce::AudioChannelSet::stereo(), true)
+  .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+  apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout())
 {
   Parameters::addListenerToAllParameters(apvts, this);
 }
 
 OneBassBandAudioProcessor::~OneBassBandAudioProcessor()
 {
+}
+
+
+bool OneBassBandAudioProcessor::isBusesLayoutSupported (const BusesLayout& layouts) const
+{
+  const auto& mainIn = layouts.getMainInputChannelSet();
+  const auto& mainOut = layouts.getMainOutputChannelSet();
+
+  if (mainIn.isDisabled() || mainOut.isDisabled())
+    return false;
+
+  if (mainIn != mainOut)
+    return false;
+
+  if (mainIn == juce::AudioChannelSet::mono() || mainIn == juce::AudioChannelSet::stereo())
+    return true;
+
+  return false;
 }
 
 //==============================================================================
@@ -86,10 +96,13 @@ void OneBassBandAudioProcessor::changeProgramName(int index, const juce::String 
 //==============================================================================
 void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+  int numChannels = getMainBusNumInputChannels();
+
   inputGain.prepareToPlay(sampleRate);
   octaver.prepareToPlay(sampleRate, samplesPerBlock);
 
   delaySamples = sampleRateManager.prepareToPlay(sampleRate, TARGET_SAMPLE_RATE, samplesPerBlock);
+  setLatencySamples(std::round(delaySamples));
   dryWet.prepareToPlay(sampleRate, samplesPerBlock);
   dryWet.setDelaySamples(delaySamples);
 
