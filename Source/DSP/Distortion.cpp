@@ -1,5 +1,4 @@
 #include "Distortion.h"
-#include <cmath>
 
 
 Distortion::Distortion(float distAmount)

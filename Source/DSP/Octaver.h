@@ -5,6 +5,14 @@
 
 #include "../PluginParameters.h"
 
+
+/**
+ * @class Octaver
+ * @brief This class handles octave shifting functionality.
+ * 
+ * The signal can be pitched up or down in this octaves: [-2, -1, 0, 1, 2].
+ * The pitch shifting is done by a delay line and two modulated read positions.
+ */
 class Octaver
 {
 public:
@@ -34,4 +42,6 @@ private:
   bool isPitchUp = false;
 
   const float modFrequency = 15.0f;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Octaver);
 };

@@ -3,6 +3,13 @@
 #include <JuceHeader.h>
 
 
+/*
+ * @class SampleRateIncapsulator
+  * @brief This class is a wrapper for the JUCE oversampling class.
+  * 
+  * Given a target sample rate, it will create a "block" where the processing will be done at the target sample rate, and then downsampled to the original sample rate.
+  * This operation is useful for non-linear processing, such as distortion.
+ */
 class SampleRateIncapsulator
 {
 public:
@@ -35,4 +42,6 @@ private:
   std::unique_ptr<juce::dsp::Oversampling<float>> oversampler;
   int numChannels;
   int exponent;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(SampleRateIncapsulator);
 };
