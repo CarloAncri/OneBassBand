@@ -4,7 +4,7 @@
 SampleRateIncapsulator::SampleRateIncapsulator(int channels, float targetSampleRate) : numChannels(channels), exponent(0), targetSampleRate(targetSampleRate) {}
 
 
-void SampleRateIncapsulator::prepareToPlay(double sampleRate, int samplesPerBlock)
+float SampleRateIncapsulator::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
   double ratio = targetSampleRate / sampleRate;
   exponent = std::max(0, static_cast<int>(std::round(std::log2(ratio)))); // 2^exponent = oversample quantity.
@@ -22,6 +22,8 @@ void SampleRateIncapsulator::prepareToPlay(double sampleRate, int samplesPerBloc
     oversampler->reset();
   } else
     oversampler.reset();
+  
+  return SampleRateIncapsulator::getLatencyInSamples();
 }
 
 

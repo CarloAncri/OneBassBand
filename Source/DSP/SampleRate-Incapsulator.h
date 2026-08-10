@@ -9,7 +9,7 @@ public:
   SampleRateIncapsulator(int numChannels, float targetSampleRate = 96000.0f);
   ~SampleRateIncapsulator() = default;
 
-  void prepareToPlay(double sampleRate, int samplesPerBlock);
+  float prepareToPlay(double sampleRate, int samplesPerBlock);
   void reset();
   float getLatencyInSamples() const;
 

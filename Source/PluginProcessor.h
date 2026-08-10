@@ -50,6 +50,8 @@ public:
 private:
   juce::AudioProcessorValueTreeState apvts;
 
+  float delaySamples = 0.0f; // delay introduced by anti-aliasing filters (SampleRateIncapsulator)
+
   Octaver octaver;
   SampleRateIncapsulator sampleRateManager{2, TARGET_SAMPLE_RATE};
   Distortion distortion;
