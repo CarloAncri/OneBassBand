@@ -20,7 +20,14 @@
               file="Source/DSP/One-Knob-Compressor.h"/>
         <FILE id="xbBSA3" name="Octaver.cpp" compile="1" resource="0" file="Source/DSP/Octaver.cpp"/>
         <FILE id="TnOsEV" name="Octaver.h" compile="0" resource="0" file="Source/DSP/Octaver.h"/>
+        <FILE id="vRo81c" name="Gain-Stager.cpp" compile="1" resource="0" file="Source/DSP/Gain-Stager.cpp"/>
+        <FILE id="CaF3L2" name="Gain-Stager.h" compile="0" resource="0" file="Source/DSP/Gain-Stager.h"/>
+        <FILE id="XQvyZY" name="SampleRate-Incapsulator.cpp" compile="1" resource="0"
+              file="Source/DSP/SampleRate-Incapsulator.cpp"/>
+        <FILE id="I0jbmU" name="SampleRate-Incapsulator.h" compile="0" resource="0"
+              file="Source/DSP/SampleRate-Incapsulator.h"/>
         <FILE id="yueyJL" name="Distortion.h" compile="0" resource="0" file="Source/DSP/Distortion.h"/>
+        <FILE id="m829Vw" name="Distortion.cpp" compile="1" resource="0" file="Source/DSP/Distortion.cpp"/>
       </GROUP>
       <GROUP id="{A80E0DD0-A0E7-37DE-DA87-D96FA2758F77}" name="GUI">
         <FILE id="NxXgRb" name="MyTheme.h" compile="0" resource="0" file="Source/GUI/MyTheme.h"/>
