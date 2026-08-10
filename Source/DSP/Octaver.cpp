@@ -1,5 +1,10 @@
 #include "Octaver.h"
-#include <cmath>
+
+
+Octaver::Octaver(int currentOctave) : currentOctave(currentOctave), targetOctave(currentOctave)
+{
+  updateParameters();
+}
 
 
 void Octaver::prepareToPlay(double sampleRate, int samplesPerBlock)

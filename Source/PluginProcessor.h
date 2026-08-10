@@ -54,7 +54,7 @@ private:
   float delaySamples = 0.0f; // delay introduced by anti-aliasing filters (SampleRateIncapsulator)
 
   GainStager inputGain{Parameters::defaultInputGain};
-  Octaver octaver;
+  Octaver octaver{Parameters::defaultPitchShiftedOctave};
   SampleRateIncapsulator sampleRateManager{2};
   Distortion distortion{Parameters::defaultDistortionAmount};
   GainStager outputGain{Parameters::defaultOutputGain};

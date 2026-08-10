@@ -3,10 +3,12 @@
 #include <JuceHeader.h>
 #include <atomic>
 
+#include "../PluginParameters.h"
+
 class Octaver
 {
 public:
-  Octaver() = default;
+  Octaver(int currentOctave = Parameters::defaultPitchShiftedOctave);
   ~Octaver() = default;
 
   void prepareToPlay(double sampleRate, int samplesPerBlock);
