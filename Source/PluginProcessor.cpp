@@ -87,7 +87,7 @@ void OneBassBandAudioProcessor::changeProgramName(int index, const juce::String 
 void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
   octaver.prepareToPlay(sampleRate, samplesPerBlock);
-  delaySamples = sampleRateManager.prepareToPlay(sampleRate, samplesPerBlock);
+  delaySamples = sampleRateManager.prepareToPlay(sampleRate, TARGET_SAMPLE_RATE, samplesPerBlock);
   distortion.prepareToPlay(TARGET_SAMPLE_RATE, samplesPerBlock);
 }
 

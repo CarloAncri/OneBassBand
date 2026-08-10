@@ -53,7 +53,7 @@ private:
   float delaySamples = 0.0f; // delay introduced by anti-aliasing filters (SampleRateIncapsulator)
 
   Octaver octaver;
-  SampleRateIncapsulator sampleRateManager{2, TARGET_SAMPLE_RATE};
+  SampleRateIncapsulator sampleRateManager{2};
   Distortion distortion;
 
   //==============================================================================

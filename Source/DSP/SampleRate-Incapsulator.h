@@ -6,10 +6,10 @@
 class SampleRateIncapsulator
 {
 public:
-  SampleRateIncapsulator(int numChannels, float targetSampleRate = 96000.0f);
+  SampleRateIncapsulator(int numChannels);
   ~SampleRateIncapsulator() = default;
 
-  float prepareToPlay(double sampleRate, int samplesPerBlock);
+  float prepareToPlay(double sampleRate, int targetSampleRate, int samplesPerBlock);
   void reset();
   float getLatencyInSamples() const;
 
@@ -35,5 +35,4 @@ private:
   std::unique_ptr<juce::dsp::Oversampling<float>> oversampler;
   int numChannels;
   int exponent;
-  float targetSampleRate;
 };

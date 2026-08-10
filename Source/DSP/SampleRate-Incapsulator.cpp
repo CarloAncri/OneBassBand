@@ -1,10 +1,10 @@
 #include "SampleRate-Incapsulator.h"
 
 
-SampleRateIncapsulator::SampleRateIncapsulator(int channels, float targetSampleRate) : numChannels(channels), exponent(0), targetSampleRate(targetSampleRate) {}
+SampleRateIncapsulator::SampleRateIncapsulator(int channels) : numChannels(channels), exponent(0) {}
 
 
-float SampleRateIncapsulator::prepareToPlay(double sampleRate, int samplesPerBlock)
+float SampleRateIncapsulator::prepareToPlay(double sampleRate, int targetSampleRate, int samplesPerBlock)
 {
   double ratio = targetSampleRate / sampleRate;
   exponent = std::max(0, static_cast<int>(std::round(std::log2(ratio)))); // 2^exponent = oversample quantity.
