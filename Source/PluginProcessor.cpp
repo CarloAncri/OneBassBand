@@ -86,9 +86,11 @@ void OneBassBandAudioProcessor::changeProgramName(int index, const juce::String 
 //==============================================================================
 void OneBassBandAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock)
 {
+  inputGain.prepareToPlay(sampleRate);
   octaver.prepareToPlay(sampleRate, samplesPerBlock);
   delaySamples = sampleRateManager.prepareToPlay(sampleRate, TARGET_SAMPLE_RATE, samplesPerBlock);
   distortion.prepareToPlay(TARGET_SAMPLE_RATE, samplesPerBlock);
+  outputGain.prepareToPlay(sampleRate);
 }
 
 void OneBassBandAudioProcessor::releaseResources()
@@ -100,10 +102,14 @@ void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
   juce::ScopedNoDenormals noDenormals;
   juce::ignoreUnused(midiMessages);
 
+  inputGain.processBlock(buffer);
+
   octaver.processBlock(buffer);
   sampleRateManager.processBlock(buffer, [this](juce::dsp::AudioBlock<float> &block) {
     distortion.processBlock(block);
   });
+
+  outputGain.processBlock(buffer);
 }
 
 void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
@@ -113,6 +119,12 @@ void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID
 
   if (parameterID == Parameters::distortionAmount)
     distortion.setDistortionAmount(newValue);
+
+  if (parameterID == Parameters::inputGain)
+    inputGain.setGainDb(newValue);
+
+  if (parameterID == Parameters::outputGain)
+    outputGain.setGainDb(newValue);
   
 }
 

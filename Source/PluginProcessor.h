@@ -6,6 +6,7 @@
 #include "DSP/Octaver.h"
 #include "DSP/SampleRate-Incapsulator.h"
 #include "DSP/Distortion.h"
+#include "DSP/Gain-Stager.h"
 
 # define TARGET_SAMPLE_RATE 96000.0f
 
@@ -52,9 +53,11 @@ private:
 
   float delaySamples = 0.0f; // delay introduced by anti-aliasing filters (SampleRateIncapsulator)
 
+  GainStager inputGain{Parameters::defaultInputGain};
   Octaver octaver;
   SampleRateIncapsulator sampleRateManager{2};
-  Distortion distortion;
+  Distortion distortion{Parameters::defaultDistortionAmount};
+  GainStager outputGain{Parameters::defaultOutputGain};
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OneBassBandAudioProcessor)
