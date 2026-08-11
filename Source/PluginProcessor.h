@@ -55,12 +55,12 @@ private:
 
   float delaySamples = 0.0f; // delay introduced by anti-aliasing filters (SampleRateIncapsulator)
 
-  GainStager inputGain{Parameters::defaultInputGain};
-  Octaver octaver{Parameters::defaultPitchShiftedOctave};
+  GainStager inputGain;
+  Octaver octaver;
   SampleRateIncapsulator sampleRateManager;
-  Distortion distortion{Parameters::defaultDistortionAmount};
-  GainStager outputGain{Parameters::defaultOutputGain};
-  DryWet dryWet{Parameters::defaultDryWetAmount};
+  Distortion distortion;
+  GainStager outputGain;
+  DryWet dryWet;
 
   //==============================================================================
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(OneBassBandAudioProcessor)

@@ -3,9 +3,14 @@
 
 //==============================================================================
 OneBassBandAudioProcessor::OneBassBandAudioProcessor() : AudioProcessor(BusesProperties()
-                                                                            .withInput("Input", juce::AudioChannelSet::stereo(), true)
-                                                                            .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
-                                                         apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout())
+  .withInput("Input", juce::AudioChannelSet::stereo(), true)
+  .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
+  apvts(*this, nullptr, "PARAMETERS", Parameters::createParameterLayout()),
+  inputGain{Parameters::defaultInputGain},
+  octaver{Parameters::defaultPitchShiftedOctave},
+  distortion{Parameters::defaultDistortionAmount},
+  outputGain{Parameters::defaultOutputGain},
+  dryWet{Parameters::defaultDryWetAmount}
 {
   Parameters::addListenerToAllParameters(apvts, this);
 }
