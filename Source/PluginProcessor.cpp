@@ -127,6 +127,7 @@ void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
   juce::ignoreUnused(midiMessages);
 
   inputGain.processBlock(buffer);
+  calculateLevel(buffer, true);
   dryWet.copyDrySignal(buffer);
 
   octaver.processBlock(buffer);
@@ -136,6 +137,7 @@ void OneBassBandAudioProcessor::processBlock(juce::AudioBuffer<float> &buffer, j
 
   dryWet.mixDrySignal(buffer);
   outputGain.processBlock(buffer);
+  calculateLevel(buffer, false);
 }
 
 void OneBassBandAudioProcessor::parameterChanged(const juce::String &parameterID, float newValue)
@@ -166,6 +168,22 @@ bool OneBassBandAudioProcessor::hasEditor() const
 juce::AudioProcessorEditor *OneBassBandAudioProcessor::createEditor()
 {
   return new OneBassBandAudioProcessorEditor(*this, apvts);
+}
+
+void OneBassBandAudioProcessor::calculateLevel(juce::AudioBuffer<float> &buffer, bool isInput)
+{
+  float maxRms = 0.0f;
+  for (int ch = 0; ch < buffer.getNumChannels(); ++ch)
+  {
+    float rms = buffer.getRMSLevel(ch, 0, buffer.getNumSamples());
+    if (rms > maxRms) 
+      maxRms = rms;
+  }
+    
+  if (isInput) 
+    sigInLvl.store(maxRms);
+  else
+    sigOutLvl.store(maxRms);
 }
 
 //==============================================================================
